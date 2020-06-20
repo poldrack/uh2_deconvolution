@@ -15,6 +15,7 @@ import argparse
 from templateflow import api as tflow
 import json
 import glob
+import warnings
 
 
 def get_args():
@@ -29,8 +30,9 @@ def get_args():
     parser.add_argument('--atlas', default='Schaefer2018')
     parser.add_argument('--atlas_resolution', default=2)
     parser.add_argument('--TR', default=0.68)
-    parser.add_argument('--use_confounds', default=True)
-    parser.add_argument('--overwrite', default=False,
+    parser.add_argument('--use_confounds', default=True, action='store_false')
+    parser.add_argument('--use_ridge', default=False, action='store_true')
+    parser.add_argument('--overwrite', default=False, action='store_true',
                         help='overwrite existing timecourse derivatives')
     parser.add_argument('--hpf_cutoff', default=88,
                         help='cutoff period for high-pass filter (seconds)')
@@ -172,8 +174,14 @@ def setup_fir_fitter(info_dict, events_dict, timecourses, windowlen=20):
     return(rf)
 
 
-def get_evoked_responses(rf):
-    rf.fit()
+def get_evoked_responses(rf, info_dict):
+    if info_dict['use_ridge']:
+        # this spits a lot of deprecation warnings, which we disable
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            rf.ridge_regress()
+    else:
+        rf.fit()
     return(rf.get_timecourses())
 
 
@@ -187,7 +195,8 @@ def save_deconv_derivatives(evoked_responses, info_dict):
 
 
 def get_deconv_derivative_path(info_dict):
-    deriv_filename = f'sub-{info_dict["sub"]}_task-{info_dict["task"]}_run-{info_dict["run"]}_atlas-{info_dict["atlas"]}_desc-{info_dict["atlas_desc"]}_confounds-{info_dict["use_confounds"]}_deconvolved.tsv'
+    method = 'ridge' if info_dict['use_ridge'] else 'OLS'
+    deriv_filename = f'sub-{info_dict["sub"]}_task-{info_dict["task"]}_run-{info_dict["run"]}_atlas-{info_dict["atlas"]}_desc-{info_dict["atlas_desc"]}_confounds-{info_dict["use_confounds"]}_method-{method}_deconvolved.tsv'
     info_dict['deconv_deriv_path'] = os.path.join(
         info_dict['deconv_sub'],
         deriv_filename
@@ -208,5 +217,5 @@ if __name__ == '__main__':
     timecourses = pd.read_csv(info_dict['parcel_deriv_path'], sep='\t')
     event_dict, info_dict = setup_events(info_dict)
     rf = setup_fir_fitter(info_dict, event_dict, timecourses)
-    evoked_responses = get_evoked_responses(rf)
+    evoked_responses = get_evoked_responses(rf, info_dict)
     save_deconv_derivatives(evoked_responses, info_dict)
