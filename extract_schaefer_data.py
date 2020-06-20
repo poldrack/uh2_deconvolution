@@ -10,7 +10,7 @@ use nideconv to deconvolve on schaefer region data
 import os
 import nideconv
 import pandas as pd
-from uh2_17network_qc import extract_timecourse_from_nii
+from deconv_utils import extract_timecourse_from_nii
 import argparse
 from templateflow import api as tflow
 import json
