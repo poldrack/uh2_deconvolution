@@ -100,7 +100,7 @@ def get_atlas_path(info_dict, args):
 
 
 def save_parcellation_derivatives(timecourses, info_dict):
-    timecourses.to_csv(info_dict['parcel_deriv_path'], sep='\t')
+    timecourses.to_csv(info_dict['parcel_deriv_path'], sep='\t', index=False)
     deriv_sidecar = info_dict['parcel_deriv_path'].replace('.tsv', '.json')
     assert deriv_sidecar != info_dict['parcel_deriv_path']
     with open(deriv_sidecar, 'w') as f:
