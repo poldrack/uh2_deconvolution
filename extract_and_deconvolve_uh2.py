@@ -100,7 +100,7 @@ def get_atlas_path(info_dict, args):
 
 
 def save_parcellation_derivatives(timecourses, info_dict):
-    timecourses.to_csv(info_dict['parcel_deriv_path'], sep='\t', index=False)
+    timecourses.to_csv(info_dict['parcel_deriv_path'], sep='\t')
     deriv_sidecar = info_dict['parcel_deriv_path'].replace('.tsv', '.json')
     assert deriv_sidecar != info_dict['parcel_deriv_path']
     with open(deriv_sidecar, 'w') as f:
@@ -187,7 +187,7 @@ def get_evoked_responses(rf, info_dict):
 
 def save_deconv_derivatives(evoked_responses, info_dict):
     info_dict = get_deconv_derivative_path(info_dict)
-    evoked_responses.to_csv(info_dict['deconv_deriv_path'], sep='\t', index=False)
+    evoked_responses.to_csv(info_dict['deconv_deriv_path'], sep='\t')
     deriv_sidecar = info_dict['deconv_deriv_path'].replace('.tsv', '.json')
     assert deriv_sidecar != info_dict['deconv_deriv_path']
     with open(deriv_sidecar, 'w') as f:
