@@ -147,7 +147,7 @@ def get_confounds(info_dict, confounds_to_include=None):
 def setup_events(info_dict):
     info_dict['events_file'] = os.path.join(
         info_dict['basedir'],
-        f'sub-{info_dict["sub"]}/ses-{info_dict["ses"]}/func/sub-s130_ses-{info_dict["ses"]}_task-{info_dict["task"]}_run-{info_dict["run"]}_events.tsv')
+        f'sub-{info_dict["sub"]}/ses-{info_dict["ses"]}/func/sub-{info_dict["sub"]}_ses-{info_dict["ses"]}_task-{info_dict["task"]}_run-{info_dict["run"]}_events.tsv')
     events = pd.read_csv(info_dict['events_file'], sep='\t')
     events_dict = {}
     trial_types = events.loc[:, 'trial_type'].unique()
