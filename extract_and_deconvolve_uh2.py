@@ -29,7 +29,7 @@ def get_args():
     parser.add_argument('--atlas', default='Schaefer2018')
     parser.add_argument('--atlas_resolution', default=2)
     parser.add_argument('--TR', default=0.68)
-    parser.add_argument('--use_confounds', default=False)
+    parser.add_argument('--use_confounds', default=True)
     parser.add_argument('--overwrite', default=False,
                         help='overwrite existing timecourse derivatives')
     parser.add_argument('--hpf_cutoff', default=88,
