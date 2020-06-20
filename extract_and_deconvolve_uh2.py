@@ -80,7 +80,10 @@ def setup_derivative_dirs(info_dict, makedirs=True):
             'func'
         )
         if makedirs and not os.path.exists(info_dict[f'{dirtype}_sub']):
-            os.makedirs(info_dict[f'{dirtype}_sub'])
+            try:
+                os.makedirs(info_dict[f'{dirtype}_sub'])
+            except FileExistsError:
+                pass
     return(info_dict)
 
 
