@@ -34,7 +34,7 @@ def get_args():
     parser.add_argument('--use_ridge', default=False, action='store_true')
     parser.add_argument('--overwrite', default=False, action='store_true',
                         help='overwrite existing timecourse derivatives')
-    parser.add_argument('--hpf_cutoff', default=88,
+    parser.add_argument('--hpf_cutoff', default=120,
                         help='cutoff period for high-pass filter (seconds)')
     args = parser.parse_args()
 
