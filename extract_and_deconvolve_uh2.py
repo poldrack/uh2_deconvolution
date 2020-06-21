@@ -182,7 +182,8 @@ def get_evoked_responses(rf, info_dict):
             rf.ridge_regress()
     else:
         rf.fit()
-    return(rf.get_timecourses())
+    info_dict['rsquared'] = rf.get_rsq().to_json()
+    return((rf.get_timecourses(), info_dict))
 
 
 def save_deconv_derivatives(evoked_responses, info_dict):
@@ -217,5 +218,5 @@ if __name__ == '__main__':
     timecourses = pd.read_csv(info_dict['parcel_deriv_path'], sep='\t')
     event_dict, info_dict = setup_events(info_dict)
     rf = setup_fir_fitter(info_dict, event_dict, timecourses)
-    evoked_responses = get_evoked_responses(rf, info_dict)
+    evoked_responses, info_dict = get_evoked_responses(rf, info_dict)
     save_deconv_derivatives(evoked_responses, info_dict)
