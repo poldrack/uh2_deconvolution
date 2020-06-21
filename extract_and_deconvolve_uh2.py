@@ -181,7 +181,13 @@ def get_evoked_responses(rf, info_dict):
             warnings.simplefilter("ignore")
             rf.ridge_regress()
     else:
-        rf.fit()
+        try:
+            rf.fit()
+            info_dict['ridge_fallback'] = False
+        except:
+            print('ols fit failed, using ridge regression')
+            rf.ridge_regress()
+            info_dict['ridge_fallback'] = True
     info_dict['rsquared'] = rf.get_rsq().to_json()
     return((rf.get_timecourses(), info_dict))
 
