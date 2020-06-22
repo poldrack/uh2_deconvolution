@@ -184,7 +184,7 @@ def get_evoked_responses(rf, info_dict):
         try:
             rf.fit()
             info_dict['ridge_fallback'] = False
-        except:
+        except: # noqa
             print('ols fit failed, using ridge regression')
             rf.ridge_regress()
             info_dict['ridge_fallback'] = True
